@@ -25,7 +25,7 @@ Sample Webserver configuration
 ==============================
 Run the python program as wsgi application using this configuration.
 
- <VirtualHost *:80>
+    <VirtualHost *:80>
        ServerName gwXX.domain.tld
        ServerAdmin admin@domain.tld
        DocumentRoot /var/www/gwXX.domain.tld
@@ -44,8 +44,8 @@ Run the python program as wsgi application using this configuration.
                Order deny,allow
                Allow from all
        </Directory>
- 
+
        LogLevel warn
        ErrorLog ${APACHE_LOG_DIR}/error.log
        CustomLog ${APACHE_LOG_DIR}/access.log combined
- </VirtualHost>
+    </VirtualHost>
