@@ -14,18 +14,22 @@ ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
 OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 """
 
-import bottle
-import os
 import logging
+import os
+
+import bottle
+
 
 # hostname and tcp port to listen on
+# (only used when running with bottles built-in HTTP server)
 HOSTNAME = "127.0.0.1"
 PORT = 8899
 
-# enable debug logging into the webbrowser
+# display debug logs in the webbrowser
+# (only used when running with bottles built-in HTTP server)
 DEBUG = True
 
-# where to write logs to
+# absolute path to a logfile on disc
 LOGFILE = "/var/log/fffd-keyupload.log"
 
 # This variable is used to validate the input.
@@ -36,64 +40,74 @@ HEXCHARS = 'abcdef0123456789'
 KEYPATH = "/etc/fastd/fffd-mesh-vpn/peers"
 
 
-@bottle.route('/upload_key', method='GET')
+@bottle.route('/', method='GET')
 def keys_upload():
+    """ provide the keyupload mechanism at URL /
+
+        A valid URL for key uploads looks like this:
+        http://server:port/?mac=<macAddress>&key=<fastdKey>
+    """
     remote = bottle.request.get('REMOTE_ADDR')
     params = bottle.request.query
 
+    # check whether all parameters have been provided with the request
     if 'mac' not in params.keys() or 'key' not in params.keys():
-        logging.error('Missing parameters from %s.', remote)
+        logging.error('Request from %s: Missing parameters.', remote)
         return bottle.HTTPResponse(status=400,
                                    body='Error: Missing parameters.')
 
+    # get parameters and do basic validation on them
     mac = params.get('mac', None)
     key = params.get('key', None)
 
     if set(mac) - set(HEXCHARS) or len(mac) != 12:
-        logging.error('Invalid mac address (mac=%s) from %s.', mac, remote)
+        logging.error('Request from %s: Invalid mac address (mac=%s).', remote, mac)
         return bottle.HTTPResponse(status=400,
                                    body='Error: Invalid MAC address.')
 
     if set(key) - set(HEXCHARS) or len(key) != 64:
-        logging.error('Invalid fastd key (key=%s) from %s.', key, remote)
+        logging.error('Request from %s: Invalid fastd key (key=%s).', remote, key)
         return bottle.HTTPResponse(status=400,
                                    body='Error: Invalid fastd key.')
 
-
-    # check for existence of the file
-    updatetype = "Added new"
+    # select the filename for the fastd public key file
+    # and check whether it already exists (only for logging)
     filename = os.path.join(KEYPATH, mac)
+    updatetype = "Added new"
     if os.path.isfile(filename):
         updatetype = "Updated"
 
-    # add or update the key
+    # add or update the fastd public key
     try:
         f = open(filename, 'w')
-
     except:
-        logging.error('Error while trying to access %s', filename)
+        logging.error('Error while trying to access %s.', filename)
         return bottle.HTTPResponse(status=500)
 
     f.write('key "' + key + '";\n')
     f.close()
 
-    logging.info('%s fastd key %s for mac address %s from %s.',
-                 updatetype, key, mac, remote)
+    logging.info('Request from %s: %s fastd key %s for mac address %s.',
+                 remote, updatetype, key, mac)
 
     # reload fastd
     if os.system('pkill -HUP fastd') != 0:
         logging.error('Error while reloading fastd')
 
-    return bottle.HTTPResponse(status=200,
+    return bottle.HTTPResponse(status=201,
                                body='Done.')
 
 
+# Enable logging
+#
 logging.basicConfig(level=logging.INFO,
                     filename=LOGFILE,
                     format='%(asctime)s %(message)s')
 
 logging.info("fffd-keyupload listening on %s:%s", HOSTNAME, PORT)
 
+# Run the application
+#
 if __name__ == '__main__':
     bottle.run(host=HOSTNAME,
                port=PORT,
