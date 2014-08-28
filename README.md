@@ -28,6 +28,7 @@ Installation
 * Update configuration section at the beginning of the script
 * Permit write access to the logfile specified in configuration
 * Allow the user your webserver runs as to write the key directory
+* Add sudo permission for webserver user to the reload_fastd.sh script
 * Add a virtual host to your webserver configuration
 
 Sample Apache2 configuration
@@ -40,7 +41,7 @@ Run the python program as wsgi application using this configuration.
        DocumentRoot /var/www/gwXX.domain.tld
 
        WSGIDaemonProcess fffd-keyupload user=www-data group=www-data processes=1 threads=5
-       WSGIScriptAlias /upload_key /opt/fffd-keyupload/upload.py
+       WSGIScriptAlias /upload_key /opt/fffd-keyupload/keyupload/keyupload.py
 
        <Directory "/var/www/gwXX.domain.tld">
                Options Indexes FollowSymLinks MultiViews
@@ -58,3 +59,7 @@ Run the python program as wsgi application using this configuration.
        ErrorLog ${APACHE_LOG_DIR}/error.log
        CustomLog ${APACHE_LOG_DIR}/access.log combined
     </VirtualHost>
+
+Sample sudo configuration
+-------------------------
+    www-data        ALL = NOPASSWD: /opt/fffd-keyupload/script/reload_fastd.sh
