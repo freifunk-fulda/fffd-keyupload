@@ -39,6 +39,9 @@ HEXCHARS = 'abcdef0123456789'
 # path where to write fastd public key files
 KEYPATH = "/etc/fastd/fffd-mesh-vpn/peers"
 
+# script to execute in order to reload the fastd service
+RELOAD_COMMAND = "sudo /opt/fffd-keyupload/script/reload_fastd.sh"
+
 
 @bottle.route('/', method='GET')
 def keys_upload():
@@ -91,7 +94,7 @@ def keys_upload():
                  remote, updatetype, key, mac)
 
     # reload fastd
-    if os.system('pkill -HUP fastd') != 0:
+    if os.system(RELOAD_COMMAND) != 0:
         logging.error('Error while reloading fastd')
 
     return bottle.HTTPResponse(status=201,
