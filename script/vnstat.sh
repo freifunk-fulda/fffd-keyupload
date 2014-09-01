@@ -3,7 +3,7 @@ set -e
 
 IFACES=$(ls /var/lib/vnstat/)
 
-TARGET=/var/www/gw01.freifunk-fulda.de/
+TARGET=/var/www/gwXX.freifunk-fulda.de/
 
 for iface in $IFACES; do
     /usr/bin/vnstati -i ${iface} -h -o ${TARGET}${iface}_hourly.png
@@ -13,7 +13,7 @@ for iface in $IFACES; do
     /usr/bin/vnstati -i ${iface} -s -o ${TARGET}${iface}_summary.png
 done
 
-cat > ${TARGET}stats <<EOT
+cat > ${TARGET}stats.html <<EOT
 <!DOCTYPE html>
 <html lang="de">
   <head>
