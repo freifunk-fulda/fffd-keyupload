@@ -113,6 +113,7 @@ def keys_upload():
                  remote, updatetype, key, mac)
 
     # reload fastd
+    logging.info('Reloading fastd.')
     os.system(RELOAD_COMMAND)
 
     return bottle.HTTPResponse(status=201,
