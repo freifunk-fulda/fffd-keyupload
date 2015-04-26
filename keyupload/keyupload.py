@@ -74,11 +74,30 @@ def keys_upload():
                                    body='Error: Invalid fastd key.')
 
     # select the filename for the fastd public key file
-    # and check whether it already exists (only for logging)
+    # and check whether it already exists
     filename = os.path.join(KEYPATH, mac)
-    updatetype = "Added new"
+
     if os.path.isfile(filename):
-        updatetype = "Updated"
+        # the mac address already exists. check the key.
+        file = open(filename, "r")
+        line = file.readline()
+        file.close()
+
+        if key in line:
+            # the key has not changed
+            logging.info('Request from %s: No update. Key %s unchanged for mac address %s.',
+                         remote, key, mac)
+
+            return bottle.HTTPResponse(status=201,
+                                       body='NOOP.')
+
+        else:
+            # the key has changed
+            updatetype = "Updated"
+
+    else:
+        # the mac address does not exist yet
+        updatetype = "Added new"
 
     # add or update the fastd public key
     try:
