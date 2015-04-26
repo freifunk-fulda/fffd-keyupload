@@ -37,7 +37,7 @@ LOGFILE = "/var/log/fffd-keyupload.log"
 HEXCHARS = 'abcdef0123456789'
 
 # path where to write fastd public key files
-KEYPATH = "/etc/fastd/fffd-mesh-vpn/peers"
+KEYPATH = "/etc/fastd/fffd-mesh-vpn/fffd-peers-nodes"
 
 # script to execute in order to reload the fastd service
 RELOAD_COMMAND = "sudo /opt/fffd-keyupload/script/reload_fastd.sh"
