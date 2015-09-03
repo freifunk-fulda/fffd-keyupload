@@ -15,24 +15,44 @@
 <body>
   <div id="container" class="col-xs-12 col-sm-12 col-md-10 col-md-offset-1 col-lg-8 col-lg-offset-2">
     <header>
-      <h1>Freifunk Fulda <span>Freies Netz für freie B&uuml;rger!</span></h1>
+      <h1>Freifunk Fulda <span>Freies Netz f&uuml;r freie B&uuml;rger!</span></h1>
     </header>
 
     <div class="main">
       <p>
+        Dies ist ein Gateway-Server der Freifunk-Community Fulda. 
+      </p>
+
+      <p>
         Freifunk ist ein nicht-kommerzielles B&uuml;rgernetz. Die Freifunk-Initiative hat sich zum Ziel gemacht eine
         unabh&auml;ngige Netz-Infrastruktur aufzubauen um von kommerziellen Anbietern unabh&auml;ngig zu sein. Freifunk
-        vernetzt Menschen weltweit, in vielen St&auml;dten und D&ouml;rfern, ohne Zensur und &Uuml;berwachung.
+        vernetzt Menschen weltweit, in vielen St&auml;dten und D&ouml;rfern, ohne Zensur und &Uuml;berwachung. Weitere
+        Informationen findest Du auf unserer Webseite <a href="https://fulda.freifunk.net">fulda.freifunk.net</a>.
       </p>
+
+        Die Aufgabe der Gateway-Server ist es, Freifunk-Knoten miteinander zu verbinden, die zu weit voneinander 
+        entfernt sind, um eine Mesh-Verbindung per WLAN herzustellen. Dar&uuml;ber hinaus verbindet das Gateway
+        die Knoten von Freifunk Fulda mit anderen Communities und dem Internet.
+      </p>
+
       <p>
-        Weitere Informationen finden Sie auf unserer <strong><a href="http://freifunk-fulda.de">Webseite</a></strong>.
+        Die nachfolgenden Diagramme zeigen das Datenaufkommen auf diesem Gateway. Im Diagramm <i>bat0</i> ist das 
+        Freifunk-interne Datenaufkommen dargestellt, w&auml;hrend im Diagramm <i>fffd.internet</i> die Datenmenge
+        zu und von Zielen im Internet dargestellt ist. Die Statistik zeigt nur das Datenaufkommen dieses Gateway-Servers
+        an und ber&uuml;cksichtigt nicht die &uuml;ber andere Gateways geleitete Datenmenge.
+      </p>
+
+      <p class="center">
+        <img src="/bat0_summary.png" alt="">
+        <img src="/fffd.internet_summary.png" alt="">
       </p>
     </div>
 
-    <footer class="clearfix">
+    <footer>
       <ul>
         <li><a href="mailto:kontakt@freifunk-fulda.de">Kontakt</a></li>
-        <li><a href="/stats.html">Statistik</a></li>
+        <li>|</li>
+        <li><a href="https://fulda.freifunk.net">fulda.freifunk.net</a></li>
       </ul>
     </footer>
   </div>
