@@ -3,7 +3,7 @@ set -e
 
 IFACES=$(ls /var/lib/vnstat/)
 
-TARGET=/var/www/gwXX.freifunk-fulda.de/
+TARGET=/opt/fffd-keyupload/website/
 
 for iface in $IFACES; do
     /usr/bin/vnstati -i ${iface} -h -o ${TARGET}${iface}_hourly.png
